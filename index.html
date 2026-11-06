@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DropZone – Find your battle royale squad</title>
+  <meta name="description" content="Find teammates for PUBG and Free Fire by rank, region and playstyle. Join an open squad or post your own.">
+
+  <!-- Fonts: Bricolage Grotesque (headings) + Manrope (body). System fonts are the fallback. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#squads">Skip to squads</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="DropZone home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="#0A1A3F"/>
+          <path d="M14 6l6 10h-4v6h-4v-6H8z" fill="#fff"/>
+        </svg>
+        <span>DropZone</span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="#squads">Find a squad</a>
+        <a href="#how">How it works</a>
+        <button class="btn btn--primary btn--sm" type="button" data-open-create>Create a squad</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>Fill your squad before the plane leaves.</h1>
+          <p class="lead">Find teammates for PUBG and Free Fire by rank, region and playstyle. Join an open squad or post your own in under a minute.</p>
+          <div class="hero-actions">
+            <a class="btn btn--light" href="#squads">Browse squads</a>
+            <button class="btn btn--ghost" type="button" data-open-create>Create a squad</button>
+          </div>
+        </div>
+
+        <!-- Live lobby preview: the one memorable element of the page -->
+        <aside class="lobby" aria-label="Example squad lobby">
+          <div class="lobby-top">
+            <span class="lobby-title">Night Owls</span>
+            <span class="lobby-live"><i aria-hidden="true"></i><b id="open-count">0</b> squads recruiting</span>
+          </div>
+          <p class="lobby-meta">PUBG · Squad · Platinum · South Asia</p>
+          <ul class="lobby-slots">
+            <li class="p filled"><span>AK</span>Akash</li>
+            <li class="p filled"><span>RV</span>Riya</li>
+            <li class="p filled"><span>MS</span>Mehul</li>
+            <li class="p open"><span>+</span>Your spot</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ SQUAD LISTING ============ -->
+    <section class="section" id="squads">
+      <div class="container">
+        <div class="section-head">
+          <h2>Open squads</h2>
+          <p>Pick a game, narrow by rank and region, then send a join request.</p>
+        </div>
+
+        <!-- Filters -->
+        <form class="filters" id="filters" role="search" aria-label="Filter squads" onsubmit="return false">
+          <div class="seg" role="group" aria-label="Game">
+            <button type="button" class="seg-btn is-active" data-game="all" aria-pressed="true">All games</button>
+            <button type="button" class="seg-btn" data-game="PUBG" aria-pressed="false">PUBG</button>
+            <button type="button" class="seg-btn" data-game="Free Fire" aria-pressed="false">Free Fire</button>
+          </div>
+
+          <label class="field field--grow">
+            <span>Search</span>
+            <input type="search" id="f-query" placeholder="Squad name or playstyle" autocomplete="off">
+          </label>
+
+          <label class="field">
+            <span>Mode</span>
+            <select id="f-mode">
+              <option value="all">Any</option>
+              <option>Duo</option>
+              <option>Squad</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Rank</span>
+            <select id="f-rank">
+              <option value="all">Any</option>
+              <option>Bronze</option><option>Silver</option><option>Gold</option>
+              <option>Platinum</option><option>Diamond</option><option>Master</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Region</span>
+            <select id="f-region">
+              <option value="all">Any</option>
+              <option>South Asia</option><option>Southeast Asia</option><option>Europe</option>
+              <option>North America</option><option>South America</option><option>Middle East</option>
+            </select>
+          </label>
+        </form>
+
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <div class="grid" id="squad-grid"></div>
+
+        <!-- Shown when no squad matches the filters -->
+        <div class="empty" id="empty" hidden>
+          <h3>No squads match these filters</h3>
+          <p>Clear the filters or start a squad of your own.</p>
+          <div class="hero-actions">
+            <button class="btn btn--outline" type="button" id="reset-filters">Clear filters</button>
+            <button class="btn btn--primary" type="button" data-open-create>Create a squad</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS (a real sequence, so steps are numbered) ============ -->
+    <section class="section section--tint" id="how">
+      <div class="container">
+        <div class="section-head">
+          <h2>From lobby to squad in three steps</h2>
+        </div>
+        <ol class="steps">
+          <li><h3>Set your filters</h3><p>Choose your game, rank and region so every squad you see is a realistic match.</p></li>
+          <li><h3>Send a request</h3><p>Tap Request to join. The squad leader sees your request and can accept it.</p></li>
+          <li><h3>Drop together</h3><p>Once you are accepted, share your in-game ID and queue up.</p></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>&copy; <span id="year"></span> DropZone</span>
+      <span>Not affiliated with PUBG or Garena Free Fire.</span>
+    </div>
+  </footer>
+
+  <!-- ============ CREATE SQUAD DIALOG ============ -->
+  <dialog id="create-dialog" aria-labelledby="create-title">
+    <form id="create-form" novalidate>
+      <h2 id="create-title">Create a squad</h2>
+
+      <label class="field">
+        <span>Squad name</span>
+        <input type="text" name="name" maxlength="24" required placeholder="e.g. Night Owls">
+        <small class="error" data-error-for="name" hidden>Enter a squad name.</small>
+      </label>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Game</span>
+          <select name="game"><option>PUBG</option><option>Free Fire</option></select>
+        </label>
+        <label class="field">
+          <span>Mode</span>
+          <select name="mode"><option>Squad</option><option>Duo</option></select>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label class="field">
+          <span>Your rank</span>
+          <select name="rank">
+            <option>Bronze</option><option>Silver</option><option selected>Gold</option>
+            <option>Platinum</option><option>Diamond</option><option>Master</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Region</span>
+          <select name="region">
+            <option>South Asia</option><option>Southeast Asia</option><option>Europe</option>
+            <option>North America</option><option>South America</option><option>Middle East</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Playstyle</span>
+        <input type="text" name="style" maxlength="80" placeholder="e.g. Hot drops, calm comms">
+      </label>
+
+      <label class="check"><input type="checkbox" name="mic" checked> Voice chat on</label>
+
+      <div class="dialog-actions">
+        <button class="btn btn--outline" type="button" id="create-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit">Post squad</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Status messages (screen-reader friendly) -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
